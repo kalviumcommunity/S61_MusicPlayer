@@ -13,3 +13,16 @@ Our GrooveGlobe app offers a comprehensive platform for music enthusiasts to exp
 **Search Functionality:**  With a robust search feature, users can easily find their favorite artists, albums, or genres, streamlining their music discovery process.
 
 **Artist Profiles:**  Each music player profile showcases detailed information about the artist, including biographies, discographies, and notable achievements, offering users valuable insights into the artists behind the music.
+
+# Setting Up Locally
+
+**Clone the Repository:**  Begin by cloning the GrooveGlobe repository to your local machine using the following command:  git clone https://github.com/your-username/GrooveGlobe.git
+
+**Navigate to Project Directory:** Change your current directory to the newly cloned GrooveGlobe repository:  cd GrooveGlobe
+
+**Install Dependencies:** Install the project dependencies by running the following command:  npm install
+
+**Start the Development Server:**   Once the dependencies are installed, start the development server using the following command: npm run dev
+
+
+
