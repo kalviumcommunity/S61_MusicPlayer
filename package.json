@@ -4,16 +4,25 @@
   "description": "GrooveGlobe is a web application that allows users to listen to their favorite music tracks online. With a vast collection of songs from various genres and artists, GrooveGlobe offers a seamless and immersive music listening experience for users of all preferences.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Guna priya",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
-  }
+  },
+  "keywords": [
+    "node.js",
+    "express",
+    "REST API",
+    "authentication",
+    "mongodb",
+    "CRUD",
+    "web",
+    "server"
+  ]
 }
