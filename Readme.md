@@ -24,5 +24,7 @@ Our GrooveGlobe app offers a comprehensive platform for music enthusiasts to exp
 
 **Start the Development Server:**   Once the dependencies are installed, start the development server using the following command: npm run dev
 
+#Deployed Link : https://s61-musicplayer.onrender.com/
+
 
 
