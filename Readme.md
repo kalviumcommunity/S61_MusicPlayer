@@ -18,12 +18,14 @@ Our GrooveGlobe app offers a comprehensive platform for music enthusiasts to exp
 
 **Clone the Repository:** Begin by cloning the GrooveGlobe repository to your local machine using the following command: git clone https://github.com/your-username/GrooveGlobe.git
 
-
 **Navigate to Project Directory:** Change your current directory to the newly cloned GrooveGlobe repository: cd GrooveGlobe
 
 #Deployed Link : https://s61-musicplayer.onrender.com/
 
-
 **Install Dependencies:** Install the project dependencies by running the following command: npm install
 
 **Start the Development Server:** Once the dependencies are installed, start the development server using the following command: npm run dev
+
+**Front-End Deployement link:**
+
+[seehere](https://65f9419b735a9483d3a90e1b--incomparable-torte-c5264c.netlify.app/)
