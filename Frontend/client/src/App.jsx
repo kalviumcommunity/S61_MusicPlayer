@@ -1,12 +1,12 @@
 import './App.css'
-import LandPage from './Component/LandPage'
+// import LandPage from './Component/LandPage'
+import Dummy from "./Component/Dummy"
 
 function App() {
-  
-
   return (
     <>
-      <LandPage />
+      {/* <LandPage /> */}
+      <Dummy/>
     </>
   )
 }
