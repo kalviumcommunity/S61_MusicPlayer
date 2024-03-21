@@ -1,0 +1,20 @@
+.singer-info {
+    border: 8px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .singer-info h2 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+  }
+  
+  .singer-info p {
+    margin: 5px 0;
+  }
+
+  *{
+    background-color: white;
+    color: black;
+  }
