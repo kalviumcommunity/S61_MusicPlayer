@@ -43,21 +43,6 @@ function userInput() {
         [name]: value,
       });
     }
-
-    // if (type === 'checkbox') {
-    //
-    // } else if (type === 'number') {
-    //   const parsedValue = parseInt(value);
-    //   setFormData({
-    //     ...formData,
-    //     [name]: parsedValue
-    //   });
-    // } else {
-    //   setFormData({
-    //     ...formData,
-    //     [name]: value
-    //   });
-    // }
   };
 
   const handleSubmit = async (e) => {
