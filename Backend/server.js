@@ -30,6 +30,7 @@ app.get("/", (req, res) => {
 //routes
 app.use("/api", musicRoute);
 
+
 app.listen(port, () => {
   console.log("Server is running");
 });

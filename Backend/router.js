@@ -3,6 +3,7 @@ const Joi = require('joi');
 const { SingerModel } = require("./Schema");
 const { Router } = require("express");
 const musicRoute = express.Router();
+const {UserModel} = require('./Userschema.js')
 
 // Define Joi schema for validation
 const singerValidationSchema = Joi.object({
@@ -78,6 +79,33 @@ musicRoute.delete("/delete/:id", async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
+
+musicRoute.post('/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const user = await UserModel.findOne({ username, password });
+
+        if (!user) {
+            return res.status(401).json({ error: 'Invalid username or password' });
+        }
+
+        // Set username in cookie
+        res.cookie('username', username, { httpOnly: true });
+        res.status(200).json({ message: 'Login successful', user });
+    } catch (err) {
+        console.error('Error logging in:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Logout endpoint
+musicRoute.post('/logout', (req, res) => {
+    // Clear username cookie
+    res.clearCookie('username');
+    res.status(200).json({ message: 'Logout successful' });
+});
+
+
 
 function validateSinger(req, res, next) {
     const { error } = singerValidationSchema.validate(req.body);
