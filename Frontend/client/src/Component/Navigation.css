@@ -1,0 +1,25 @@
+.navbar {
+    left: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    width: 99.9vw;
+    margin-bottom: 40px;
+    background-color: #9eb5f3;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-item {
+    margin-right: 20px;
+    font-size: 20px;
+}
+
+.nav-link {
+    color:rgb(246, 23, 179);
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    text-decoration: none;
+}
