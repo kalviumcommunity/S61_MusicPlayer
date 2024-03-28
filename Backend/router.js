@@ -4,6 +4,7 @@ const { SingerModel } = require("./Schema");
 const { Router } = require("express");
 const musicRoute = express.Router();
 const {UserModel} = require('./Userschema.js')
+const jwt = require('jsonwebtoken');
 
 // Define Joi schema for validation
 const singerValidationSchema = Joi.object({
@@ -88,9 +89,12 @@ musicRoute.post('/login', async (req, res) => {
         if (!user) {
             return res.status(401).json({ error: 'Invalid username or password' });
         }
+        const token = jwt.sign({username}, process.env.JWT_SECRET, {expiresIn:'1h'});
 
         // Set username in cookie
-        res.cookie('username', username, { httpOnly: true });
+        res.cookie('token',token, { httpOnly: true });
+
+        // Set username in cookie
         res.status(200).json({ message: 'Login successful', user });
     } catch (err) {
         console.error('Error logging in:', err);
