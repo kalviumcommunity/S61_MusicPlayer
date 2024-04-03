@@ -54,7 +54,15 @@ function userInput() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          "Famous Songs": formData["Famous Songs"].split(","),
+          Awards: {
+            "Grammy Awards" : parseInt(formData.Awards["Grammy Awards"]),
+            "MTV Video Music Awards": parseInt(formData.Awards["MTV Video Music Awards"]),
+            "BET Awards": parseInt(formData.Awards["BET Awards"]),
+          }
+        }),
       });
 
       if (!response.ok) {

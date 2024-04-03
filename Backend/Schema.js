@@ -19,8 +19,12 @@ const SingerSchema = new Schema(
     Education: { type: String },
     Description: { type: String },
     Country: { type: String },
+    createdBy:{
+      type: String
+    }
   },
-  { timestamps: true }
+  { timestamps: true },
+
 );
 
 const SingerModel = mongoose.model("Singer", SingerSchema);
