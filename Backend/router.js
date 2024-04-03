@@ -28,6 +28,38 @@ const singerValidationSchema = Joi.object({
 
 musicRoute.use(express.json());
 
+
+
+musicRoute.post('/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const user = await UserModel.findOne({ username, password });
+
+        if (!user) {
+            return res.status(401).json({ error: 'Invalid username or password' });
+        }
+
+        const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn:'1h' });
+
+        // Set token in cookie
+        res.cookie('token', token, { httpOnly: true });
+        res.status(200).json({ message: 'Login successful', user });
+    } catch (err) {
+        console.error('Error logging in:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+musicRoute.post('/logout', (req, res) => {
+    // Clear username cookie
+    res.clearCookie('username');
+    res.status(200).json({ message: 'Logout successful' });
+});
+
+
+
+
+
 musicRoute.post("/create", validateSinger, async (req, res) => {
     try {
         const prod = await SingerModel.create(req.body);
