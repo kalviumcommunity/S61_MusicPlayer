@@ -1,53 +1,109 @@
+const express = require('express');
+const Joi = require('joi');
 const { SingerModel } = require("./Schema");
-const { Router, application } = require("express");
+const { Router } = require("express");
+const musicRoute = express.Router();
+const {UserModel} = require('./Userschema.js')
+const jwt = require('jsonwebtoken');
 
-const musicRoute = Router();
+// Define Joi schema for validation
+const singerValidationSchema = Joi.object({
+    Singer: Joi.string().required(),
+    "Full Name": Joi.string().required(),
+    Birthdate: Joi.date().required(),
+    Birthplace: Joi.string().required(),
+    Genre: Joi.string(),
+    "Famous Songs": Joi.array().items(Joi.string()),
+    Year: Joi.string(),
+    Awards: Joi.object({
+        "Grammy Awards": Joi.number(),
+        "MTV Video Music Awards": Joi.number(),
+        "BET Awards": Joi.number(),
+    }),
+    Nationality: Joi.string(),
+    Education: Joi.string(),
+    Description: Joi.string(),
+    Country: Joi.string(),
+}).options({ allowUnknown: true });
 
-musicRoute.post("/create", async (req, res) => {
-try {
-   const prod =  await SingerModel.create(req.body)
-  res.status(200).send({msg: "Data created successfully", prod})
-} catch (error) {
-    res.status(500).json({errMsg:"Invalid post request", error})
-}
-})
+musicRoute.use(express.json());
 
-musicRoute.get("/read", async (req, res) => {
-  try {
-      const data = await SingerModel.find()
-      res.status(200).send({msg:"Data received",data})
-  } catch (error) {
-      res.status(500).json({errMsg:"Invalid get request", error})
-  }
+
+
+musicRoute.post('/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const user = await UserModel.findOne({ username, password });
+
+        if (!user) {
+            return res.status(401).json({ error: 'Invalid username or password' });
+        }
+
+        const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn:'1h' });
+
+        // Set token in cookie
+        res.cookie('token', token, { httpOnly: true });
+        res.status(200).json({ message: 'Login successful', user });
+    } catch (err) {
+        console.error('Error logging in:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+musicRoute.post('/logout', (req, res) => {
+    // Clear username cookie
+    res.clearCookie('username');
+    res.status(200).json({ message: 'Logout successful' });
 });
 
 
+
+
+
+musicRoute.post("/create", validateSinger, async (req, res) => {
+    try {
+        const prod = await SingerModel.create(req.body);
+        res.status(200).send({ msg: "Data created successfully", prod });
+    } catch (error) {
+        res.status(500).json({ errMsg: "Invalid post request", error });
+    }
+});
+
+musicRoute.get("/read", async (req, res) => {
+    try {
+        const data = await SingerModel.find();
+        res.status(200).send({ msg: "Data received", data });
+    } catch (error) {
+        res.status(500).json({ errMsg: "Invalid get request", error });
+    }
+});
+
+// update a singer
 musicRoute.put("/update/:id", async (req, res) => {
     try {
         const { id } = req.params;
-    
-        const product = await SingerModel.findByIdAndUpdate(id, req.body);
-    
-        if (!product) {
-          return res.status(404).json({ message: "singer not found" });
+
+        const singer = await SingerModel.findByIdAndUpdate(id, req.body);
+
+        if (!singer) {
+            return res.status(404).json({ message: "singer not found" });
         }
-    
-        const updatedProduct = await SingerModel.findByIdAndUpdate(id);
-        res.status(200).json(updatedProduct);
-      } catch (error) {
+
+        const updatedSinger = await SingerModel.findByIdAndUpdate(id);
+        res.status(200).json(updatedSinger);
+    } catch (error) {
         res.status(500).json({ message: error.message });
-      }
+    }
+});
 
-  });
-
-
-  musicRoute.delete("/delete/:id", async (req, res) => {
+// delete a singer
+musicRoute.delete("/delete/:id", async (req, res) => {
     try {
         const { id } = req.params;
 
-        const product = await SingerModel.findByIdAndDelete(id);
+        const singer = await SingerModel.findByIdAndDelete(id);
 
-        if (!product) {
+        if (!singer) {
             return res.status(404).json({ message: "singer not found" });
         }
 
@@ -57,22 +113,42 @@ musicRoute.put("/update/:id", async (req, res) => {
     }
 });
 
+musicRoute.post('/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const user = await UserModel.findOne({ username, password });
+
+        if (!user) {
+            return res.status(401).json({ error: 'Invalid username or password' });
+        }
+        const token = jwt.sign({username}, process.env.JWT_SECRET, {expiresIn:'1h'});
+
+        // Set username in cookie
+        res.cookie('token',token, { httpOnly: true });
+
+        // Set username in cookie
+        res.status(200).json({ message: 'Login successful', user });
+    } catch (err) {
+        console.error('Error logging in:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Logout endpoint
+musicRoute.post('/logout', (req, res) => {
+    // Clear username cookie
+    res.clearCookie('username');
+    res.status(200).json({ message: 'Logout successful' });
+});
 
 
 
+function validateSinger(req, res, next) {
+    const { error } = singerValidationSchema.validate(req.body);
+    if (error) {
+        return res.status(400).json({ message: error.details[0].message });
+    }
+    next();
+}
 
-
-
-
-
-
-
-
-  
-  
-
-
-
-
-
-module.exports = { musicRoute };
+module.exports = { musicRoute, singerValidationSchema };
